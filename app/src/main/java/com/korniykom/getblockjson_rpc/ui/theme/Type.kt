@@ -23,12 +23,29 @@ val Typography = Typography(
         letterSpacing = 0.sp,
         color = Color.White
     ),
+    titleSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Normal,
+        fontSize = 18.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.sp,
+        color = DarkGrey
+    ),
+    headlineSmall = TextStyle(
+        fontFamily = FontFamily.Default,
+        fontWeight = FontWeight.Bold,
+        fontSize = 18.sp,
+        lineHeight = 16.sp,
+        letterSpacing = 0.sp,
+        color = DarkGrey
+    ),
     labelSmall = TextStyle(
         fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 16.sp,
-        letterSpacing = 0.5.sp
+        fontWeight = FontWeight.Light,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        letterSpacing = 0.5.sp,
+        color = SlightlyLightGrey
     )
 
 )
