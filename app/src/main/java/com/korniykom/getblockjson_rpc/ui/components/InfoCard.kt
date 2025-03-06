@@ -5,13 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.korniykom.getblockjson_rpc.ui.theme.DarkGrey
 import com.korniykom.getblockjson_rpc.ui.theme.LightGrey
 import com.korniykom.getblockjson_rpc.ui.theme.ELEVATION_SMALL
 import com.korniykom.getblockjson_rpc.ui.theme.Grey
@@ -19,9 +17,9 @@ import com.korniykom.getblockjson_rpc.ui.theme.PADDING_EXTRASMALL
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_MEDIUM
 
 @Composable
-fun Card(
+fun InfoCard(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         colors = CardDefaults.cardColors(

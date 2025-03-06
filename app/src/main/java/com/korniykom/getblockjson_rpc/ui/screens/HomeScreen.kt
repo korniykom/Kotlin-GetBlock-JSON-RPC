@@ -1,19 +1,24 @@
-package com.korniykom.getblockjson_rpc.ui
+package com.korniykom.getblockjson_rpc.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
-import com.korniykom.getblockjson_rpc.ui.components.Card
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.korniykom.getblockjson_rpc.ui.HomeScreenViewModel
 import com.korniykom.getblockjson_rpc.ui.components.Header
+import com.korniykom.getblockjson_rpc.ui.components.InfoCard
 import com.korniykom.getblockjson_rpc.ui.theme.BackgroundColor
 
 @Composable
-fun HomeScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(
+    modifier: Modifier = Modifier,
+    homeViewModel: HomeScreenViewModel = viewModel()
+) {
+    val uiState by homeViewModel.uiState.collectAsState()
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
@@ -23,10 +28,10 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             Header()
         }
         item {
-            Card(title = "SOL Supply")
+            InfoCard(title = uiState.solSupply)
         }
         item {
-            Card(title = "Current Epoch")
+            InfoCard(title = uiState.epoch)
         }
     }
 }

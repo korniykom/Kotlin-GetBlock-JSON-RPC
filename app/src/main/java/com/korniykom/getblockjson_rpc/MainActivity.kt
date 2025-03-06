@@ -4,14 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.korniykom.getblockjson_rpc.ui.HomeScreen
+import androidx.compose.runtime.getValue
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.korniykom.getblockjson_rpc.ui.screens.BlockScreen
+import com.korniykom.getblockjson_rpc.ui.screens.HomeScreen
 import com.korniykom.getblockjson_rpc.ui.theme.GetBlockJSONRPCTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,10 +22,37 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             GetBlockJSONRPCTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(modifier = Modifier.padding(innerPadding))
-                }
+                GetBlockApp()
             }
+        }
+    }
+}
+
+
+enum class GetBlockScreen(@StringRes val title: Int) {
+    HomeScreen(title = R.string.home_screen),
+    BlockScreen(title = R.string.block_screen)
+}
+
+@Composable
+fun GetBlockApp(
+    navController: NavHostController = rememberNavController()
+) {
+    val backStackEntry by navController.currentBackStackEntryAsState()
+    val currentScreen = GetBlockScreen.valueOf(
+        backStackEntry?.destination?.route ?: GetBlockScreen.HomeScreen.name
+    )
+
+    NavHost(
+        navController = navController,
+        startDestination = GetBlockScreen.HomeScreen.name
+    ) {
+        composable(route = GetBlockScreen.HomeScreen.name) {
+            HomeScreen()
+        }
+
+        composable(route = GetBlockScreen.BlockScreen.name) {
+            BlockScreen()
         }
     }
 }
