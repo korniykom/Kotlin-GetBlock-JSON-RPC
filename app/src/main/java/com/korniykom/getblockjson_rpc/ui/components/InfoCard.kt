@@ -18,10 +18,17 @@ import com.korniykom.getblockjson_rpc.ui.theme.PADDING_MEDIUM
 
 @Composable
 fun InfoCard(
-    title: String,
     modifier: Modifier = Modifier,
+    title: String = "Empty",
+    subTitle: String = "Empty",
+    firstSectionTitle: String = "Empty",
+    firstSectionSubtitle: String = "Empty",
+    secondSectionTitle: String = "Empty",
+    secondSectionSubtitle: String = "Empty",
+    onClick: () -> Unit = {}
 ) {
     Card(
+        onClick = onClick,
         colors = CardDefaults.cardColors(
             containerColor = LightGrey
         ),
@@ -37,17 +44,28 @@ fun InfoCard(
                 modifier = modifier.padding(bottom = PADDING_EXTRASMALL)
             )
             Text(
-                text = "595,595,595.9",
+                text = subTitle,
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = modifier.padding(bottom = PADDING_MEDIUM)
             )
-            InnerCard()
+            InnerCard(
+                firstSectionTitle = firstSectionTitle,
+                firstSectionSubtitle = firstSectionSubtitle,
+                secondSectionTitle = secondSectionTitle,
+                secondSectionSubtitle = secondSectionSubtitle
+            )
         }
     }
 }
 
 @Composable
-fun InnerCard(modifier: Modifier = Modifier) {
+fun InnerCard(
+    modifier: Modifier = Modifier,
+    firstSectionTitle: String = "Empty",
+    firstSectionSubtitle: String = "Empty",
+    secondSectionTitle: String = "Empty",
+    secondSectionSubtitle: String = "Empty"
+) {
     Card(
         colors = CardDefaults.cardColors(
             containerColor = Grey
@@ -55,11 +73,11 @@ fun InnerCard(modifier: Modifier = Modifier) {
     ) {
         Column(modifier = modifier.padding(PADDING_MEDIUM)) {
             Text(
-                text = "Circulation Supply",
+                text = firstSectionTitle,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = modifier.padding(bottom = PADDING_EXTRASMALL)
             )
-            Text("507,942,474.9667 SOL (85.3%)")
+            Text(firstSectionSubtitle)
 
             HorizontalDivider(
                 modifier = modifier
@@ -68,11 +86,11 @@ fun InnerCard(modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = "Non-Circulation Supply",
+                text = secondSectionTitle,
                 style = MaterialTheme.typography.labelSmall,
                 modifier = modifier.padding(bottom = PADDING_EXTRASMALL)
             )
-            Text("507,942,474.9667 SOL (85.3%)")
+            Text(secondSectionSubtitle)
         }
     }
 }

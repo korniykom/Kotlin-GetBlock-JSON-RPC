@@ -4,6 +4,7 @@ import android.util.Log
 import com.korniykom.getblockjson_rpc.data.model.EpochResult
 import com.korniykom.getblockjson_rpc.data.model.RpcRequest
 import com.korniykom.getblockjson_rpc.data.model.RpcResponse
+import com.korniykom.getblockjson_rpc.data.model.SupplyResult
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -16,13 +17,23 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 class RpcRepository {
+    companion object {
+        private const val URL = "https://go.getblock.io/461017ec75194b34a7b1436e4270aae0"
+    }
 
     private val client = HttpClient {
         install(ContentNegotiation) {
-            json(Json)
+            json(Json {
+                encodeDefaults = true
+                prettyPrint = true
+                isLenient = true
+                ignoreUnknownKeys = true
+            })
         }
         install(Logging) {
             level = LogLevel.ALL
@@ -31,14 +42,34 @@ class RpcRepository {
     }
 
     suspend fun getEpoch(): RpcResponse<EpochResult> {
-        val response = client.post("https://go.getblock.io/461017ec75194b34a7b1436e4270aae0") {
+
+        val requestBody = RpcRequest(
+            method = "getEpochInfo",
+            id = "getblock.io",
+            jsonrpc = "2.0"
+        )
+
+        val response = client.post(URL) {
             contentType(ContentType.Application.Json)
-            setBody(RpcRequest(method = "getEpochInfo"))
+            setBody(Json.encodeToString(requestBody))
         }.body<RpcResponse<EpochResult>>()
 
-        Log.d("RPC", "Response: $response")
+        return response
+    }
+
+    suspend fun getSupply(): RpcResponse<SupplyResult> {
+
+        val requestBody = RpcRequest(
+            method = "getSupply",
+            id = "getblock.io",
+            jsonrpc = "2.0"
+        )
+
+        val response = client.post(URL) {
+            contentType(ContentType.Application.Json)
+            setBody(Json.encodeToString(requestBody))
+        }.body<RpcResponse<SupplyResult>>()
 
         return response
     }
 }
-

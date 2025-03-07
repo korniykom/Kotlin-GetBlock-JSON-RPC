@@ -28,10 +28,20 @@ fun HomeScreen(
             Header()
         }
         item {
-            InfoCard(title = uiState.solSupply)
+            InfoCard(
+                title = "SOL Supply",
+                subTitle = uiState.solSupply.toString(),
+                firstSectionTitle = "Circulating Supply",
+                firstSectionSubtitle = uiState.circulatingSupply.toString(),
+                secondSectionTitle = "Non-circulating Supply",
+                secondSectionSubtitle = uiState.nonCirculatingSupply.toString(),
+            )
         }
         item {
-            InfoCard(title = uiState.epoch)
+            InfoCard(
+                title = "Current Epoch",
+                subTitle = uiState.epoch.toString()
+            )
         }
     }
 }

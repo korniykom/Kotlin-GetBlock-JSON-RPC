@@ -4,24 +4,14 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class RpcRequest(
-    val jsonrpc: String = "2.0",
+    val jsonrpc: String,
     val method: String,
-    val id: String = "getblock.io"
+    val id: String
 )
 
 @Serializable
 data class RpcResponse<T>(
     val jsonrpc: String,
     val result: T,
-    val id: Int,
-)
-
-@Serializable
-data class EpochResult(
-    val absoluteSlot: Long,
-    val blockHeight: Long,
-    val epoch: Long,
-    val slotIndex: Long,
-    val slotsInEpoch: Long,
-    val transactionCount: Long,
+    val id: String
 )

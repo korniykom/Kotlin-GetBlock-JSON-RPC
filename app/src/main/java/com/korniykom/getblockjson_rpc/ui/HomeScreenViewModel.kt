@@ -15,23 +15,38 @@ class HomeScreenViewModel : ViewModel() {
     val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
     private val rpcRepository: RpcRepository = RpcRepository()
 
-    private fun fetchEpoch() {
+    fun fetchEpoch() {
         viewModelScope.launch {
             try {
                 val response = rpcRepository.getEpoch()
                 _uiState.update { currentState ->
                     currentState.copy(
-                        epoch = response.result.epoch.toString()
+                        epoch = response.result.epoch
                     )
                 }
             } catch (e: Exception) {
-                Log.e("RPC", "Error fetching epoch: ${e.message}", e)
+                Log.e("RPC", "Error fetching epoch: ${e.message}")
             }
-
         }
     }
-
+    fun fetchSupply() {
+        viewModelScope.launch {
+            try {
+                val response = rpcRepository.getSupply()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        solSupply = response.result.value.circulating + response.result.value.nonCirculating,
+                        circulatingSupply = response.result.value.circulating,
+                        nonCirculatingSupply = response.result.value.nonCirculating
+                    )
+                }
+            } catch (e: Exception) {
+                Log.e("RPC", "Error fetching epoch: ${e.message}")
+            }
+        }
+    }
     init {
         fetchEpoch()
+        fetchSupply()
     }
 }
