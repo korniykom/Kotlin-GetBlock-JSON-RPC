@@ -32,15 +32,17 @@ fun HomeScreen(
                 title = "SOL Supply",
                 subTitle = uiState.solSupply.toString(),
                 firstSectionTitle = "Circulating Supply",
-                firstSectionSubtitle = uiState.circulatingSupply.toString(),
+                firstSectionSubtitle = "${uiState.circulatingSupply} (${String.format("%.1f", uiState.percentOfCirculatingSupply)})%",
                 secondSectionTitle = "Non-circulating Supply",
-                secondSectionSubtitle = uiState.nonCirculatingSupply.toString(),
+                secondSectionSubtitle = "${uiState.nonCirculatingSupply} (${String.format("%.1f", uiState.percentOfNonCirculatingSupply)})%)",
             )
         }
         item {
             InfoCard(
                 title = "Current Epoch",
-                subTitle = uiState.epoch.toString()
+                subTitle = uiState.epoch.toString(),
+                firstSectionTitle = "Slot Range",
+                firstSectionSubtitle = "${uiState.slotRangeStart} to ${uiState.slotRangeEnd}"
             )
         }
     }

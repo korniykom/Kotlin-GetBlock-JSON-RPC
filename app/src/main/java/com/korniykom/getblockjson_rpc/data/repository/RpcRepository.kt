@@ -20,6 +20,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
 
 class RpcRepository {
     companion object {
@@ -46,6 +47,7 @@ class RpcRepository {
         val requestBody = RpcRequest(
             method = "getEpochInfo",
             id = "getblock.io",
+            params = JsonArray(listOf()),
             jsonrpc = "2.0"
         )
 
@@ -62,6 +64,7 @@ class RpcRepository {
         val requestBody = RpcRequest(
             method = "getSupply",
             id = "getblock.io",
+            params = JsonArray(listOf()),
             jsonrpc = "2.0"
         )
 

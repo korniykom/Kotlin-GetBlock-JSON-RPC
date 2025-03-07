@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.korniykom.getblockjson_rpc.data.repository.RpcRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,33 +16,47 @@ class HomeScreenViewModel : ViewModel() {
     val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
     private val rpcRepository: RpcRepository = RpcRepository()
 
-    fun fetchEpoch() {
+    private fun fetchEpoch() {
         viewModelScope.launch {
-            try {
-                val response = rpcRepository.getEpoch()
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        epoch = response.result.epoch
-                    )
+            while(true) {
+                try {
+                    val response = rpcRepository.getEpoch()
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            epoch = response.result.epoch,
+                            slotRangeStart = response.result.absoluteSlot - response.result.slotIndex,
+                            slotRangeEnd = response.result.absoluteSlot - response.result.slotIndex + response.result.slotsInEpoch - 1
+                        )
+                    }
+                } catch (e: Exception) {
+                    Log.e("RPC", "Error fetching epoch: ${e.message}")
                 }
-            } catch (e: Exception) {
-                Log.e("RPC", "Error fetching epoch: ${e.message}")
+                delay(60_000)
             }
         }
     }
-    fun fetchSupply() {
+    private fun fetchSupply() {
         viewModelScope.launch {
-            try {
-                val response = rpcRepository.getSupply()
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        solSupply = response.result.value.circulating + response.result.value.nonCirculating,
-                        circulatingSupply = response.result.value.circulating,
-                        nonCirculatingSupply = response.result.value.nonCirculating
-                    )
+            while(true) {
+                try {
+                    val response = rpcRepository.getSupply()
+                    val circulating = response.result.value.circulating
+                    val nonCirculating = response.result.value.nonCirculating
+                    val total = circulating + nonCirculating
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            solSupply = response.result.value.circulating + response.result.value.nonCirculating,
+                            circulatingSupply = circulating,
+                            nonCirculatingSupply = nonCirculating,
+                            percentOfCirculatingSupply = ((circulating.toDouble() / total) * 100),
+                            percentOfNonCirculatingSupply = ((nonCirculating.toDouble() / total) * 100)
+
+                        )
+                    }
+                } catch (e: Exception) {
+                    Log.e("RPC", "Error fetching epoch: ${e.message}")
                 }
-            } catch (e: Exception) {
-                Log.e("RPC", "Error fetching epoch: ${e.message}")
+                delay(60_000)
             }
         }
     }
