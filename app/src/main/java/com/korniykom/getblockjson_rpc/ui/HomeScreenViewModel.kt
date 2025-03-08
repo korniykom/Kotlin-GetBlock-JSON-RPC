@@ -21,11 +21,16 @@ class HomeScreenViewModel : ViewModel() {
             while(true) {
                 try {
                     val response = rpcRepository.getEpoch()
+                    val epoch = response.result.epoch
+                    val absoluteSlot = response.result.absoluteSlot
+                    val slotIndex = response.result.slotIndex
+                    val slotInEpoch = response.result.slotsInEpoch
                     _uiState.update { currentState ->
                         currentState.copy(
-                            epoch = response.result.epoch,
-                            slotRangeStart = response.result.absoluteSlot - response.result.slotIndex,
-                            slotRangeEnd = response.result.absoluteSlot - response.result.slotIndex + response.result.slotsInEpoch - 1
+                            epoch = epoch,
+                            slotRangeStart = absoluteSlot - slotIndex,
+                            slotRangeEnd = absoluteSlot - slotIndex + slotInEpoch - 1,
+                            timeRemain = calculateTimeRemain(absoluteSlot - slotIndex + slotInEpoch - 1, absoluteSlot)
                         )
                     }
                 } catch (e: Exception) {
@@ -34,6 +39,17 @@ class HomeScreenViewModel : ViewModel() {
                 delay(60_000)
             }
         }
+    }
+    private fun calculateTimeRemain(endSLot: Long, currentSlot: Long): String {
+        val remainingSlots = endSLot - currentSlot
+        val remainingSeconds = (remainingSlots * 0.4).toLong()
+
+        val days = remainingSeconds / (24 * 3600)
+        val hours = (remainingSeconds % (24 * 3600)) / 3600
+        val minutes = (remainingSeconds % 3600) / 60
+        val seconds = remainingSeconds % 60
+
+        return "${days}d ${hours}h ${minutes}m ${seconds}s"
     }
     private fun fetchSupply() {
         viewModelScope.launch {
@@ -54,12 +70,13 @@ class HomeScreenViewModel : ViewModel() {
                         )
                     }
                 } catch (e: Exception) {
-                    Log.e("RPC", "Error fetching epoch: ${e.message}")
+                    Log.e("RPC", "Error fetching supply: ${e.message}")
                 }
                 delay(60_000)
             }
         }
     }
+
     init {
         fetchEpoch()
         fetchSupply()

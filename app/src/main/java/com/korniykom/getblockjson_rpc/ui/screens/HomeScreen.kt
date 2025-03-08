@@ -42,7 +42,9 @@ fun HomeScreen(
                 title = "Current Epoch",
                 subTitle = uiState.epoch.toString(),
                 firstSectionTitle = "Slot Range",
-                firstSectionSubtitle = "${uiState.slotRangeStart} to ${uiState.slotRangeEnd}"
+                firstSectionSubtitle = "${uiState.slotRangeStart} to ${uiState.slotRangeEnd}",
+                secondSectionTitle = "Time remain",
+                secondSectionSubtitle = uiState.timeRemain.toString()
             )
         }
     }
