@@ -10,4 +10,5 @@ data class HomeScreenUiState(
     val percentOfCirculatingSupply: Double = 0.0,
     val nonCirculatingSupply: Long = -1,
     val percentOfNonCirculatingSupply: Double = 0.0,
+    val listOfBlocks: List<BlockModel> = listOf()
     )

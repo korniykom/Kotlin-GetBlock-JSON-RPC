@@ -1,6 +1,7 @@
 package com.korniykom.getblockjson_rpc.data.repository
 
 import android.util.Log
+import com.korniykom.getblockjson_rpc.data.model.BlockResult
 import com.korniykom.getblockjson_rpc.data.model.EpochResult
 import com.korniykom.getblockjson_rpc.data.model.RpcRequest
 import com.korniykom.getblockjson_rpc.data.model.RpcResponse
@@ -17,16 +18,13 @@ import io.ktor.client.request.setBody
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.encodeToJsonElement
 
 class RpcRepository {
     companion object {
         private const val URL = "https://go.getblock.io/461017ec75194b34a7b1436e4270aae0"
     }
-
     private val client = HttpClient {
         install(ContentNegotiation) {
             json(Json {
@@ -41,38 +39,56 @@ class RpcRepository {
             logger = Logger.DEFAULT
         }
     }
-
     suspend fun getEpoch(): RpcResponse<EpochResult> {
-
         val requestBody = RpcRequest(
             method = "getEpochInfo",
             id = "getblock.io",
-            params = JsonArray(listOf()),
             jsonrpc = "2.0"
         )
-
         val response = client.post(URL) {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(requestBody))
+            setBody(requestBody)
         }.body<RpcResponse<EpochResult>>()
-
         return response
     }
-
     suspend fun getSupply(): RpcResponse<SupplyResult> {
-
         val requestBody = RpcRequest(
             method = "getSupply",
             id = "getblock.io",
-            params = JsonArray(listOf()),
             jsonrpc = "2.0"
         )
-
         val response = client.post(URL) {
             contentType(ContentType.Application.Json)
-            setBody(Json.encodeToString(requestBody))
+            setBody(requestBody)
         }.body<RpcResponse<SupplyResult>>()
-
         return response
+    }
+    suspend fun getBlock(blockNumber:Long) : RpcResponse<BlockResult> {
+        val requestBody = RpcRequest(
+            method = "getBlock",
+            id = "getblock.io",
+            jsonrpc = "2.0",
+            params = listOf(Json.encodeToJsonElement(blockNumber) , Json.encodeToJsonElement(mapOf("maxSupportedTransactionVersion" to 0)))
+        )
+        Log.d("RPC", "requestbody : ${requestBody}")
+        val response = client.post(URL) {
+            contentType(ContentType.Application.Json)
+            setBody(requestBody)
+        }.body<RpcResponse<BlockResult>>()
+        Log.d("RPC", "get block response ${response}")
+        return response
+    }
+    suspend fun getBlocks(startSlot: Long, endSlot:Long? = null): List<Long> {
+        val requestBody = RpcRequest(
+            method = "getBlocks",
+            id = "getblock.io",
+            jsonrpc = "2.0",
+            params = listOf(Json.encodeToJsonElement(startSlot), Json.encodeToJsonElement(endSlot))
+        )
+        val response = client.post(URL) {
+            contentType(ContentType.Application.Json)
+            setBody(requestBody)
+        }.body<RpcResponse<List<Long>>>()
+        return response.result
     }
 }
