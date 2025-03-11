@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class HomeScreenViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeScreenUiState())
-    val uiState: StateFlow<HomeScreenUiState> = _uiState.asStateFlow()
+class GetBlockViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(GetBlockUiState())
+    val uiState: StateFlow<GetBlockUiState> = _uiState.asStateFlow()
     private val rpcRepository: RpcRepository = RpcRepository()
     private val updateTime: Long = 60_000
 
@@ -81,23 +81,22 @@ class HomeScreenViewModel : ViewModel() {
         viewModelScope.launch {
             while(true) {
                 try {
-                    val lastBlocks = rpcRepository.getBlocks(startSlot, endSlot).take(15)
+                    val lastBlocks = rpcRepository.getBlocks(startSlot, endSlot).takeLast(15)
 
-                    rpcRepository.getBlock(lastBlocks[0])
-//                    val updatedListOfBlocks = lastBlocks.map { block ->
-//                        Log.d("RPC", "Block ${block}")
-//                        val blockInfo = rpcRepository.getBlock(block)
-//                        BlockModel(
-//                            time = blockInfo.result.blockTime,
-//                            block = block,
-//                            signature = blockInfo.result.blockhash,
-//                        )
-//                    }
-//                    _uiState.update { currentState ->
-//                        currentState.copy(
-//                            listOfBlocks = updatedListOfBlocks
-//                        )
-//                    }
+//                    rpcRepository.getBlock(lastBlocks[0])
+                    val updatedListOfBlocks = lastBlocks.map { block ->
+                        val blockInfo = rpcRepository.getBlock(block)
+                        BlockModel(
+                            time = blockInfo.result.blockTime,
+                            block = block,
+                            signature = blockInfo.result.blockhash,
+                        )
+                    }
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            listOfBlocks = updatedListOfBlocks
+                        )
+                    }
                 } catch (e: Exception) {
                     Log.e("RPC", "Fetch last block error ${e.message}", e)
                 }
@@ -116,6 +115,13 @@ class HomeScreenViewModel : ViewModel() {
         val seconds = remainingSeconds % 60
 
         return "${days}d ${hours}h ${minutes}m ${seconds}s"
+    }
+    fun setCurrentBlock(block: BlockModel) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                currentBlock = block
+            )
+        }
     }
 
 

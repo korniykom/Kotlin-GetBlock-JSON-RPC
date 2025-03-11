@@ -1,6 +1,6 @@
 package com.korniykom.getblockjson_rpc.ui
 
-data class HomeScreenUiState(
+data class GetBlockUiState(
     val epoch: Int = -1,
     val slotRangeStart: Long = -1,
     val slotRangeEnd: Long = -1,
@@ -10,5 +10,10 @@ data class HomeScreenUiState(
     val percentOfCirculatingSupply: Double = 0.0,
     val nonCirculatingSupply: Long = -1,
     val percentOfNonCirculatingSupply: Double = 0.0,
-    val listOfBlocks: List<BlockModel> = listOf()
+    val listOfBlocks: List<BlockModel> = listOf(),
+    val currentBlock: BlockModel = BlockModel(
+        block = -1,
+        signature = "gibrish",
+        time = -1,
+    )
     )

@@ -1,18 +1,16 @@
 package com.korniykom.getblockjson_rpc.ui.screens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.korniykom.getblockjson_rpc.ui.HomeScreenViewModel
-import com.korniykom.getblockjson_rpc.ui.components.BlockCard
+import com.korniykom.getblockjson_rpc.ui.BlockModel
+import com.korniykom.getblockjson_rpc.ui.GetBlockViewModel
+import com.korniykom.getblockjson_rpc.ui.components.BlockList
 import com.korniykom.getblockjson_rpc.ui.components.Header
 import com.korniykom.getblockjson_rpc.ui.components.InfoCard
 import com.korniykom.getblockjson_rpc.ui.theme.BackgroundColor
@@ -20,7 +18,8 @@ import com.korniykom.getblockjson_rpc.ui.theme.BackgroundColor
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    homeViewModel: HomeScreenViewModel = viewModel()
+    homeViewModel: GetBlockViewModel = viewModel(),
+    onBlockClicked: (BlockModel) -> Unit = {}
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
     LazyColumn(
@@ -51,18 +50,11 @@ fun HomeScreen(
                 secondSectionSubtitle = uiState.timeRemain.toString()
             )
         }
-        items(uiState.listOfBlocks) { block ->
-            BlockCard(
-                signature = block.signature,
-                time = block.time.toString(),
-                block = block.block.toString()
+        item {
+            BlockList(
+                blockList = uiState.listOfBlocks,
+                onBlockClicked = onBlockClicked
             )
-//            BlockCard(
-//                signature = "test",
-//                time = "test time",
-//                block = "1243532"
-//            )
-            Log.d("HomeScreen", block.toString())
         }
     }
 }

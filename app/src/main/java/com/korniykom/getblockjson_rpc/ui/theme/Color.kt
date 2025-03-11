@@ -15,4 +15,6 @@ val BackgroundColor = Color(0xfff4f4f4)
 val LightGrey = Color(0xfffdfdfd)
 val SlightlyLightGrey = Color(0xff8a8a8a)
 val Grey = Color(0xfff4f4f4)
-val DarkGrey = Color(0xFF353535)
+val DarkGrey = Color(0xFF8d8d8d)
+
+val LinkBlue = Color(0xff0b6fda)

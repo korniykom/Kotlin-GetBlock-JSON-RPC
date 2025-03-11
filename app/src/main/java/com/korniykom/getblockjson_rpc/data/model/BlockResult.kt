@@ -8,10 +8,10 @@ data class BlockResult(
     val blockHeight: Long,
     val blockTime: Long,
     val blockhash: String,
-    val parentSlot: Long,
-    val previousBlockhash: String,
-    val rewards: List<Reward>,
-    val transactions: List<Transaction>
+//    val parentSlot: Long,
+//    val previousBlockhash: String,
+//    val rewards: List<Reward>,
+//    val transactions: List<Transaction>
 )
 @Serializable
 data class Reward(
