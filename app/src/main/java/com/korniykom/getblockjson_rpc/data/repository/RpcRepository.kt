@@ -91,4 +91,16 @@ class RpcRepository {
         }.body<RpcResponse<List<Long>>>()
         return response.result
     }
+    suspend fun getHighestSlot(): Long {
+        val requestBody = RpcRequest(
+            method = "getSlot",
+            id = "getblock.io",
+            jsonrpc = "2.0",
+        )
+        val response = client.post(URL) {
+            contentType(ContentType.Application.Json)
+            setBody(requestBody)
+        }.body<RpcResponse<Long>>()
+        return response.result
+    }
 }

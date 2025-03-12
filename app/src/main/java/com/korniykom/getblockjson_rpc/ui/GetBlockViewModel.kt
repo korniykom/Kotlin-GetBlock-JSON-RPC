@@ -16,8 +16,10 @@ class GetBlockViewModel : ViewModel() {
     val uiState: StateFlow<GetBlockUiState> = _uiState.asStateFlow()
     private val rpcRepository: RpcRepository = RpcRepository()
     private val updateTime: Long = 60_000
+    private val blockListAmount = 3;
 
     init {
+        fetchHighestSlot()
         fetchSupply()
         fetchEpoch()
     }
@@ -68,7 +70,7 @@ class GetBlockViewModel : ViewModel() {
                             timeRemain = calculateTimeRemain(newSlotRangeEnd, absoluteSlot)
                         )
                     }
-                    fetchLastBlocks(_uiState.value.slotRangeStart,_uiState.value.slotRangeEnd)
+                    fetchLastBlocks(_uiState.value.slotRangeStart,_uiState.value.slotRangeEnd, epoch)
                 } catch (e: Exception) {
                     Log.e("RPC", "Error fetching epoch: ${e.message}")
                 }
@@ -77,19 +79,20 @@ class GetBlockViewModel : ViewModel() {
         }
     }
 
-    private fun fetchLastBlocks(startSlot: Long, endSlot: Long) {
+    private fun fetchLastBlocks(startSlot: Long, endSlot: Long, epoch: Int) {
         viewModelScope.launch {
             while(true) {
                 try {
-                    val lastBlocks = rpcRepository.getBlocks(startSlot, endSlot).takeLast(15)
-
-//                    rpcRepository.getBlock(lastBlocks[0])
+                    val lastBlocks = rpcRepository.getBlocks(startSlot, endSlot).takeLast(blockListAmount)
                     val updatedListOfBlocks = lastBlocks.map { block ->
                         val blockInfo = rpcRepository.getBlock(block)
                         BlockModel(
                             time = blockInfo.result.blockTime,
                             block = block,
                             signature = blockInfo.result.blockhash,
+                            epoch = epoch,
+                            rewardLamports = blockInfo.result.rewards[0].lamports,
+                            previousBlockHash = blockInfo.result.previousBlockhash
                         )
                     }
                     _uiState.update { currentState ->
@@ -121,6 +124,20 @@ class GetBlockViewModel : ViewModel() {
             currentState.copy(
                 currentBlock = block
             )
+        }
+    }
+    private fun fetchHighestSlot() {
+        viewModelScope.launch {
+            while(true) {
+                val highestSlot = rpcRepository.getHighestSlot()
+                Log.d("RPC", "highestSlot $highestSlot")
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        highestSlot = highestSlot
+                    )
+                }
+                delay(updateTime)
+            }
         }
     }
 

@@ -27,6 +27,7 @@ import com.korniykom.getblockjson_rpc.R
 import com.korniykom.getblockjson_rpc.ui.BlockModel
 import com.korniykom.getblockjson_rpc.ui.GetBlockViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.korniykom.getblockjson_rpc.ui.components.BlockGrid
 import com.korniykom.getblockjson_rpc.ui.components.calculateTime
 import com.korniykom.getblockjson_rpc.ui.theme.DarkGrey
 import com.korniykom.getblockjson_rpc.ui.theme.Grey
@@ -42,7 +43,7 @@ fun BlockScreen(
     viewModel: GetBlockViewModel = viewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    Column(
+     Column(
         modifier = modifier
             .padding(PADDING_MEDIUM)
     ) {
@@ -57,7 +58,7 @@ fun BlockScreen(
         Text(
             modifier = modifier
                 .padding(bottom = PADDING_LARGE),
-            text = uiState.currentBlock.signature
+            text = uiState.currentBlock.block.toString()
         )
         Text(
             modifier = modifier
@@ -75,117 +76,3 @@ fun BlockScreen(
         )
     }
 }
-
-@Composable
-fun BlockGrid(
-    modifier: Modifier = Modifier,
-    blockDetails: BlockModel
-) {
-    Column (modifier = modifier) {
-        Row {
-            Text(
-                text = "Block",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = blockDetails.block.toString(),
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Timestamp",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = calculateTime(blockDetails.time),
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = blockDetails.signature,
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = ";lkasdhjfkujsagdfiuhasdiufnaisudfiuhasdfiuogashdf",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Epoch",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = "123",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Leader",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = "Whatever whenever whoever",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Reward",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = "0.000636 ($5.783)",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Transactions",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = "Total 2.5325 transactions",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-        Row {
-            Text(
-                text = "Previous Block Hash",
-                color = DarkGrey,
-                modifier = modifier
-                    .weight(2.0f)
-            )
-            Text(
-                text = "032978465iou234hgiusrt 9-87345",
-                modifier = modifier
-                    .weight(3.0f)
-            )
-        }
-    }
-}
-

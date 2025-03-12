@@ -9,9 +9,9 @@ data class BlockResult(
     val blockTime: Long,
     val blockhash: String,
 //    val parentSlot: Long,
-//    val previousBlockhash: String,
-//    val rewards: List<Reward>,
-//    val transactions: List<Transaction>
+    val previousBlockhash: String,
+    val rewards: List<Reward>,
+    val transactions: List<Transaction>
 )
 @Serializable
 data class Reward(
@@ -23,9 +23,9 @@ data class Reward(
 )
 @Serializable
 data class Transaction(
-    val meta: TransactionMeta,
+//    val meta: TransactionMeta,
     val transaction: TransactionDetails,
-    val version: String?
+//    val version: String?
 )
 @Serializable
 data class TransactionMeta(
@@ -58,11 +58,11 @@ data class Status(
 )
 @Serializable
 data class Message(
-    val accountKeys: List<String>,
-    val header: MessageHeader,
-    val instructions: List<Instruction>,
+//    val accountKeys: List<String>,
+//    val header: MessageHeader,
+//    val instructions: List<Instruction>,
     val recentBlockhash: String,
-    val addressTableLookups: List<String>
+//    val addressTableLookups: List<String>
 )
 @Serializable
 data class MessageHeader(

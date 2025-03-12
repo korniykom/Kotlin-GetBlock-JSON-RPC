@@ -68,28 +68,6 @@ fun TopRow(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SearchSection(modifier: Modifier = Modifier) {
-    Column(verticalArrangement = Arrangement.spacedBy(1.dp)) {
-        Text(
-            text = "Explore Solana Blockchain",
-            style = MaterialTheme.typography.titleLarge,
-        )
-        SearchBar(
-            query = "",
-            onQueryChange = {},
-            onSearch = {},
-            active = false,
-            onActiveChange = {},
-            shape = RoundedCornerShape(8.dp),
-            placeholder = {
-                Text("Search transactions, blocks, programs and tokens")
-            }
-        ) {}
-    }
-}
-
 @Preview(showBackground = true)
 @Composable
 fun HeaderPreview() {

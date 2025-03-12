@@ -15,5 +15,9 @@ data class GetBlockUiState(
         block = -1,
         signature = "gibrish",
         time = -1,
-    )
+        epoch = -1,
+        rewardLamports = -1,
+        previousBlockHash = "Non existent"
+    ),
+    val highestSlot: Long = 0
     )
