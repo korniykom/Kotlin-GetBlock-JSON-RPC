@@ -70,12 +70,12 @@ class RpcRepository {
             jsonrpc = "2.0",
             params = listOf(Json.encodeToJsonElement(blockNumber) , Json.encodeToJsonElement(mapOf("maxSupportedTransactionVersion" to 0)))
         )
-        Log.d("RPC", "requestbody : ${requestBody}")
+        Log.d("RPC", "requestbody : $requestBody")
         val response = client.post(URL) {
             contentType(ContentType.Application.Json)
             setBody(requestBody)
         }.body<RpcResponse<BlockResult>>()
-        Log.d("RPC", "get block response ${response}")
+        Log.d("RPC", "get block response $response")
         return response
     }
     suspend fun getBlocks(startSlot: Long, endSlot:Long? = null): List<Long> {

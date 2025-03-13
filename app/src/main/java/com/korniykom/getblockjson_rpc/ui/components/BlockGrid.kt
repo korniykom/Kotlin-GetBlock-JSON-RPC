@@ -80,7 +80,7 @@ fun BlockGrid(
                     .weight(2.0f)
             )
             Text(
-                text = "${rewardSol} ($${String.format("%.2f",rewardUsd)})",
+                text = "$rewardSol ($${String.format("%.2f",rewardUsd)})",
                 modifier = modifier
                     .weight(3.0f)
             )

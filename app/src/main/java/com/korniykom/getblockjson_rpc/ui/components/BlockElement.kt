@@ -17,7 +17,7 @@ import com.korniykom.getblockjson_rpc.ui.theme.PADDING_SMALL
 @Composable
 fun BlockElement(
     modifier: Modifier = Modifier,
-    signature: String = "2gQG1kCadycTErPRUvnYuWWihx6RE3QTAjuovciYAoiU8DGsDhPLYJLgXwaGMbhJgz5moAPA7E4NZUZJguAMwtJq\n",
+    signature: String = "2gQG1kCadyc",
     time: Long = -1,
     block: String = "325884797"
 ) {

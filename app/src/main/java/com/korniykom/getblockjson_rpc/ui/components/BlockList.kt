@@ -12,12 +12,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
-import com.korniykom.getblockjson_rpc.data.model.BlockResult
 import com.korniykom.getblockjson_rpc.ui.BlockModel
 import com.korniykom.getblockjson_rpc.ui.theme.DarkGrey
 import com.korniykom.getblockjson_rpc.ui.theme.ELEVATION_SMALL
-import com.korniykom.getblockjson_rpc.ui.theme.PADDING_EXTRASMALL
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_MEDIUM
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_SMALL
 
