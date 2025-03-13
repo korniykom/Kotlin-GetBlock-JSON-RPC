@@ -17,11 +17,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import com.korniykom.getblockjson_rpc.ui.GetBlockViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchSection(modifier: Modifier = Modifier) {
+fun SearchSection(
+    modifier: Modifier = Modifier,
+    viewModel: GetBlockViewModel,
+    onSearchClicked: () -> Unit = {}
+    ) {
     var searchQuery by remember { mutableStateOf("") }
     val context = LocalContext.current
 
@@ -38,7 +43,14 @@ fun SearchSection(modifier: Modifier = Modifier) {
             query = searchQuery,
             onQueryChange = { searchQuery = it },
             onSearch = {
-                Toast.makeText(context, "Wrong input", Toast.LENGTH_LONG).show()
+                val slot = searchQuery.toLongOrNull()
+                if(slot != null && slot in 1..viewModel.uiState.value.highestSlot) {
+                    viewModel.fetchBlock(slot)
+                    onSearchClicked()
+
+                } else {
+                    Toast.makeText(context, "Wrong input", Toast.LENGTH_LONG).show()
+                }
             },
             active = false,
             onActiveChange = {},

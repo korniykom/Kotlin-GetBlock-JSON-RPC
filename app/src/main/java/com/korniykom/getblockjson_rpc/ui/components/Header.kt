@@ -22,13 +22,18 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.korniykom.getblockjson_rpc.ui.GetBlockViewModel
 import com.korniykom.getblockjson_rpc.ui.theme.GetBlockJSONRPCTheme
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_LARGE
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_MEDIUM
 import com.korniykom.getblockjson_rpc.ui.theme.PADDING_SMALL
 
 @Composable
-fun Header(modifier: Modifier = Modifier) {
+fun Header(
+    modifier: Modifier = Modifier,
+    viewModel: GetBlockViewModel,
+    onSearchClicked: () -> Unit = {}
+) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -44,7 +49,10 @@ fun Header(modifier: Modifier = Modifier) {
     ) {
         Column(modifier = modifier.padding(PADDING_MEDIUM)) {
             TopRow()
-            SearchSection()
+            SearchSection(
+                viewModel = viewModel,
+                onSearchClicked = onSearchClicked
+            )
         }
     }
 }

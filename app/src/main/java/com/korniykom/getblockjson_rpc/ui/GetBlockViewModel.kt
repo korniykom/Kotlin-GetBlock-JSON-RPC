@@ -78,7 +78,24 @@ class GetBlockViewModel : ViewModel() {
             }
         }
     }
-
+    fun fetchBlock(slot: Long) {
+        viewModelScope.launch { 
+            val block = rpcRepository.getBlock(slot)
+            val blockModel = BlockModel(
+                block = slot,
+                signature = block.result.blockhash,
+                time = block.result.blockTime,
+                epoch = _uiState.value.epoch,
+                rewardLamports = block.result.rewards[0].lamports,
+                previousBlockHash = block.result.previousBlockhash
+            )
+            _uiState.update { currentState ->
+                currentState.copy(
+                    currentBlock = blockModel
+                )
+            }
+        }
+    }
     private fun fetchLastBlocks(startSlot: Long, endSlot: Long, epoch: Int) {
         viewModelScope.launch {
             while(true) {

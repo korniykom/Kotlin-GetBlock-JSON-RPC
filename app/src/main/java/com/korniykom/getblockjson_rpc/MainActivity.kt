@@ -56,6 +56,9 @@ fun GetBlockApp(
                 onBlockClicked = {
                     navController.navigate(GetBlockScreen.BlockScreen.name)
                     viewmodel.setCurrentBlock(it)
+                },
+                onSearchClicked = {
+                    navController.navigate(GetBlockScreen.BlockScreen.name)
                 }
             )
         }

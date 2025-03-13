@@ -19,7 +19,8 @@ import com.korniykom.getblockjson_rpc.ui.theme.BackgroundColor
 fun HomeScreen(
     modifier: Modifier = Modifier,
     homeViewModel: GetBlockViewModel = viewModel(),
-    onBlockClicked: (BlockModel) -> Unit = {}
+    onBlockClicked: (BlockModel) -> Unit = {},
+    onSearchClicked: () -> Unit = {}
 ) {
     val uiState by homeViewModel.uiState.collectAsState()
     LazyColumn(
@@ -28,7 +29,10 @@ fun HomeScreen(
             .background(BackgroundColor)
     ) {
         item {
-            Header()
+            Header(
+                viewModel = homeViewModel,
+                onSearchClicked = onSearchClicked
+            )
         }
         item {
             InfoCard(
