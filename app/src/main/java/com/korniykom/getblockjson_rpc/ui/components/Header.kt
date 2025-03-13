@@ -68,10 +68,3 @@ fun TopRow(modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun HeaderPreview() {
-    GetBlockJSONRPCTheme {
-        Header()
-    }
-}
