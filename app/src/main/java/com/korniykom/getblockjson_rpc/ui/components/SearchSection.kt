@@ -44,7 +44,7 @@ fun SearchSection(
             onQueryChange = { searchQuery = it },
             onSearch = {
                 val slot = searchQuery.toLongOrNull()
-                if(slot != null && slot in 1..viewModel.uiState.value.highestSlot) {
+                if(slot != null && slot in viewModel.uiState.value.slotRangeStart..viewModel.uiState.value.highestSlot) {
                     viewModel.fetchBlock(slot)
                     onSearchClicked()
 
