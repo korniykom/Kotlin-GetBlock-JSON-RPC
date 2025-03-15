@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GetBlock JSON-RPC</string>
+    <string name="home_screen">Home Screen</string>
+    <string name="block_screen">Block Screen</string>
+</resources>
